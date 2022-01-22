@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -10,7 +11,7 @@ class AuthController extends Controller
     {
         return view('login');
     }
-    public function singin(Request $request)
+    public function signin(Request $request)
     {
         if(auth()->attempt($request->only('email', 'password')))
         {
@@ -21,5 +22,14 @@ class AuthController extends Controller
     public function register()
     {
         return view('register');
+    }
+    public function signup(Request $request)
+    {
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ]);
+        return view('/login');
     }
 }
